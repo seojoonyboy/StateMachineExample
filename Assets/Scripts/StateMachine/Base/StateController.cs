@@ -12,7 +12,7 @@ public class StateController : MonoBehaviour {
     private bool aiActive;
 
     private IEnumerator coroutine;
-    private void Start() {
+    public virtual void Start() {
         currentState = allStates[0];
 
         coroutine = CheckState();

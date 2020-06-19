@@ -9,6 +9,13 @@ public class MinionStateController : StateController {
 
     private bool isChasing = false;
     private float Speed = 2.0f;
+
+    private Animator _animator;
+    public override void Start() {
+        base.Start();
+        _animator = GetComponent<Animator>();
+    }
+
     private void Update() {
         if (isChasing) {
             if (detectedTargets.Count > 0) {
@@ -17,7 +24,15 @@ public class MinionStateController : StateController {
                     detectedTargets[0].transform.position,
                     Speed * Time.deltaTime);
             }
-            else isChasing = false;
+            else {
+                TransitionToState(allStates[0]);
+                StopChasing();
+            }
+            if(_animator != null) _animator.Play("Walk");
+            else {
+                TransitionToState(allStates[0]);
+                StopChasing();
+            }
         }
     }
 
@@ -37,5 +52,10 @@ public class MinionStateController : StateController {
 
     public void StartChasing() {
         isChasing = true;
+    }
+
+    public void StopChasing() {
+        if(_animator != null) _animator.Play("Idle");
+        isChasing = false;
     }
 }
